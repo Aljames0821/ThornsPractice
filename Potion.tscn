@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://ddr0gemjic4l0"]
+
+[ext_resource type="Script" uid="uid://cn1danhicp1i2" path="res://HealthPotion.gd" id="1_8dixt"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8dixt"]
+albedo_color = Color(1, 0.02, 0.02, 1)
+
+[sub_resource type="TextMesh" id="TextMesh_5oiyo"]
+material = SubResource("StandardMaterial3D_8dixt")
+text = "+"
+font_size = 100
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lxg0b"]
+radius = 0.2
+height = 0.5
+
+[node name="Node3D" type="Node3D"]
+
+[node name="HealthPotion" type="Area3D" parent="."]
+script = ExtResource("1_8dixt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="HealthPotion"]
+mesh = SubResource("TextMesh_5oiyo")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HealthPotion"]
+shape = SubResource("CapsuleShape3D_lxg0b")

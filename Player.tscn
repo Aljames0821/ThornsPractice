@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://wltnroud1xf4"]
+[gd_scene load_steps=6 format=3 uid="uid://wltnroud1xf4"]
 
 [ext_resource type="Script" uid="uid://pn5rw6nc1gx0" path="res://player.gd" id="1_xhfnw"]
+[ext_resource type="Script" uid="uid://cocewg0ruhwfb" path="res://HealthBar3D.gd" id="2_kpjcp"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0rwas"]
 
@@ -22,3 +23,17 @@ mesh = SubResource("CapsuleMesh_xhfnw")
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.521859, 0.853032, 0, -0.853032, 0.521859, -1.18258, 7.13856, 3.98955)
 fov = 76.4852
+
+[node name="HealthBar3D" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.26277, 0)
+script = ExtResource("2_kpjcp")
+
+[node name="ProgressBar" type="ProgressBar" parent="HealthBar3D"]
+anchors_preset = -1
+anchor_right = 0.015
+anchor_bottom = 0.042
+offset_left = 445.0
+offset_top = 19.0
+offset_right = 748.72
+offset_bottom = 103.784
+value = 100.0

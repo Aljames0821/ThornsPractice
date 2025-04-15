@@ -1,8 +1,11 @@
-[gd_scene load_steps=17 format=3 uid="uid://dlbmvcamfnqkk"]
+[gd_scene load_steps=23 format=3 uid="uid://dlbmvcamfnqkk"]
 
 [ext_resource type="Script" uid="uid://d2j661i3kc68a" path="res://3denemy.gd" id="1_0xm2m"]
 [ext_resource type="Script" uid="uid://bjo2qh3agg5t7" path="res://main.gd" id="1_h2yge"]
 [ext_resource type="PackedScene" uid="uid://wltnroud1xf4" path="res://Player.tscn" id="2_h2yge"]
+[ext_resource type="Script" uid="uid://c244oabih2l8l" path="res://enemy_3.gd" id="4_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://pcmf5uajy6fn" path="res://PowerUp.tscn" id="5_lquwl"]
+[ext_resource type="PackedScene" uid="uid://ddr0gemjic4l0" path="res://Potion.tscn" id="6_7mycd"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1bvp3"]
 sky_top_color = Color(0.433956, 0.410553, 0.664845, 1)
@@ -34,6 +37,14 @@ albedo_color = Color(0.964706, 0.0196078, 0.0196078, 1)
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_efxa6"]
 material = SubResource("StandardMaterial3D_h2yge")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lquwl"]
+radius = 0.9
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_lquwl"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_7mycd"]
+radius = 8.412
 
 [sub_resource type="BoxMesh" id="BoxMesh_1bvp3"]
 size = Vector3(1, 1, 50)
@@ -86,18 +97,26 @@ mesh = SubResource("CapsuleMesh_efxa6")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="Enemies/enemy"]
 
-[node name="enemy2" type="CharacterBody3D" parent="Enemies" groups=["enemy"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.27507, 1.9547, 10.6938)
-script = ExtResource("1_0xm2m")
+[node name="DetectionArea" type="Area3D" parent="Enemies/enemy"]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Enemies/enemy2"]
-shape = SubResource("CapsuleShape3D_4c57u")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Enemies/enemy/DetectionArea"]
+shape = SubResource("CapsuleShape3D_lquwl")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Enemies/enemy2"]
-mesh = SubResource("CapsuleMesh_efxa6")
-skeleton = NodePath("../../enemy2")
+[node name="ExplosionTimer" type="Timer" parent="Enemies/enemy"]
 
-[node name="NavigationAgent3D" type="NavigationAgent3D" parent="Enemies/enemy2"]
+[node name="enemy3" type="Node3D" parent="Enemies"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.71567, 0)
+script = ExtResource("4_1bvp3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Enemies/enemy3"]
+mesh = SubResource("CapsuleMesh_lquwl")
+
+[node name="DetectionArea" type="Area3D" parent="Enemies/enemy3"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Enemies/enemy3/DetectionArea"]
+shape = SubResource("SphereShape3D_7mycd")
+
+[node name="ExplosionTimer" type="Timer" parent="Enemies/enemy3"]
 
 [node name="walls" type="Node3D" parent="."]
 
@@ -143,3 +162,15 @@ skeleton = NodePath("")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="walls/walls4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.4912, 1.55526, 0)
 shape = SubResource("BoxShape3D_h2yge")
+
+[node name="PowerUp" parent="." instance=ExtResource("5_lquwl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.64213, -13.1209)
+
+[node name="PowerUp2" parent="." instance=ExtResource("5_lquwl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.38478, 1.64213, -17.6699)
+
+[node name="Node3D" parent="." instance=ExtResource("6_7mycd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.1889, 2.2513, 0)
+
+[connection signal="timeout" from="Enemies/enemy/ExplosionTimer" to="Enemies/enemy" method="_on_explosion_timer_timeout"]
+[connection signal="timeout" from="Enemies/enemy3/ExplosionTimer" to="Enemies/enemy3" method="_on_explosion_timer_timeout"]
